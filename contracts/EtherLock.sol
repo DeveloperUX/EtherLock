@@ -55,8 +55,8 @@ contract EtherLock {
         return locked;
     }
 
-    function setTime() {
-        unlockTime = now + 15 seconds;
+    function setTime(uint futureTime) {
+        unlockTime = futureTime;
         LogUnlockTime(unlockTime);
     }
 
