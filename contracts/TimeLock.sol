@@ -20,29 +20,39 @@ contract EtherLock {
     // Keep track of the original contract owner
     address owner;
     uint unlockTime;
-    bool isLocked;
+    bool locked;
 
-    event Deposited(address addr, uint amount);
-    event Withdrew(address addr, uint amount);
+    event LogDeposit(address addr, uint amount);
+    event LogWithdraw(address addr, uint amount);
+    event LogUnlockTime(uint unlockTime);
+    event LogContractCreated(address owner);
+    event LogWithdrawAttempt(string message, address owner, address sender);
+    event LogCheckTime(uint currentTime, uint unlockTime);
 
     // Constructor
     function EtherLock() {
         // Who owns this contract?
         owner = msg.sender;
-        isLocked = true;
+        locked = true;
+        LogContractCreated(owner);
     }
 
     function deposit() payable {
-        Deposited(msg.sender, msg.value);
+        LogDeposit(msg.sender, msg.value);
     }
 
     function withdraw() {
-        if (msg.sender == owner) {
+      LogWithdrawAttempt("Withdraw Attempt", owner, msg.sender);
+        if (msg.sender == owner && !isLocked()) {
             uint amount = this.balance;
             bool success = owner.send(this.balance);
             if (success) {
-                Withdrew(owner, amount);
+                LogWithdraw(owner, amount);
             }
+        } else if (msg.sender != owner) {
+            LogWithdrawAttempt("Failed Withdraw, wrong sender", owner, msg.sender);
+        } else if (isLocked()) {
+            LogWithdrawAttempt("Failed Withdraw, funds locked", owner, msg.sender);
         }
     }
 
@@ -50,12 +60,19 @@ contract EtherLock {
         return this.balance;
     }
 
-    function getIsLocked() constant returns(bool) {
-        return isLocked;
+    function isLocked() constant returns(bool) {
+        LogCheckTime(now, unlockTime);
+        if (now < unlockTime) {
+          locked = true;
+        } else {
+          locked = false;
+        }
+        return locked;
     }
 
     function setTime() {
-        unlockTime = now + 1 minutes;
+        unlockTime = now + 15 seconds;
+        LogUnlockTime(unlockTime);
     }
 
     function getTime() constant returns(uint256) {
