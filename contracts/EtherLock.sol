@@ -1,20 +1,5 @@
 pragma solidity ^0.4.0;
 
-
-// This is the parent contract
-// contract Vault {
-//     EtherLock[16] timeLocks;
-//     address owner;
-
-//     function Vault() {
-//         owner = msg.sender;
-//     }
-
-//     function addTimeLock(address user, uint time) {
-
-//     }
-// }
-
 contract EtherLock {
 
     // Keep track of the original contract owner
