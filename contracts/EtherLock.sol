@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.15;
 
 contract EtherLock {
 
@@ -9,10 +9,10 @@ contract EtherLock {
 
     event LogDeposit(address addr, uint amount);
     event LogWithdraw(address addr, uint amount);
-    event LogUnlockTime(uint unlockTime);
-    event LogContractCreated(address owner);
-    event LogWithdrawAttempt(string message, address owner, address sender);
-    event LogCheckTime(uint currentTime, uint unlockTime);
+    event LogUnlockTime(uint unlockTimeX);
+    event LogContractCreated(address ownerX);
+    event LogWithdrawAttempt(string message, address ownerX, address sender);
+    event LogCheckTime(uint currentTime, uint unlockTimeX);
 
     // Constructor
     function EtherLock() {

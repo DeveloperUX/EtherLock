@@ -1,3 +1,5 @@
+pragma solidity ^0.4.0;
+
 import "./EtherLock.sol";
 
 // This is the parent contract
@@ -11,6 +13,6 @@ contract Vault {
 
   function addTimeLock(address user, uint time) {
     EtherLock newLock = new EtherLock();
-    etherLocks.push(newLock);
+    /*etherLocks.push(newLock);*/
   }
 }
